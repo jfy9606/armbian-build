@@ -2,11 +2,6 @@ name: build-onecloud
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - .github/workflows/build-onecloud.yml
 
 env:
   SCRIPT_REPO: ${{ github.repository }}
@@ -87,7 +82,7 @@ jobs:
             Armbian: `https://github.com/${ARMBIAN_REPO}/tree/${ARMBIAN_REF}` (`https://github.com/${ARMBIAN_REPO}/tree/${ARMBIAN_SHA}`)
 
             ${PATCHES:+$(echo "## Patches"
-              echo "${PATCHES}" | tr ',' '\n' | sed -E 's|(.*)|`http://github.com/jfy9606/armbian-build/pull/\1`|'
+              echo "${PATCHES}" | tr ',' '\n' | sed -E 's|(.*)|`http://github.com/armbian/build/pull/\1`|'
             )}
           EOF
 
@@ -102,7 +97,7 @@ jobs:
             Armbian: `https://github.com/${ARMBIAN_REPO}/tree/${ARMBIAN_REF}` (`https://github.com/${ARMBIAN_REPO}/tree/${ARMBIAN_SHA}`)
 
             ${PATCHES:+$(echo "# Patches"
-              echo "${PATCHES}" | tr ',' '\n' | sed -E 's|(.*)|`http://github.com/jfy9606/armbian-build/pull/\1`|'
+              echo "${PATCHES}" | tr ',' '\n' | sed -E 's|(.*)|`http://github.com/armbian/build/pull/\1`|'
             )}
 
             # SHA256
@@ -145,7 +140,7 @@ jobs:
         run: |
           for id in $(echo "$PATCHES" | tr ',' '\n'); do
             echo "::group::Download $id"
-            curl -L -o "${id}.patch" "https://github.com/jfy9606/armbian-build/pull/${id}.patch"
+            curl -L -o "${id}.patch" "https://github.com/armbian/build/pull/${id}.patch"
             echo "::endgroup::"
           done
 
@@ -227,7 +222,7 @@ jobs:
         run: |
           for id in $(echo "$PATCHES" | tr ',' '\n'); do
             echo "::group::Download $id"
-            curl -L -o "${id}.patch" "https://github.com/jfy9606/armbian-build/pull/${id}.patch"
+            curl -L -o "${id}.patch" "https://github.com/armbian/build/pull/${id}.patch"
             echo "::endgroup::"
           done
 
