@@ -1,12 +1,12 @@
-name: CI
+name: build-onecloud
 
 on:
   workflow_dispatch:
   push:
     branches:
-      - readme
+      - main
     paths:
-      - .github/workflows/ci.yml
+      - .github/workflows/build-onecloud.yml
 
 env:
   SCRIPT_REPO: ${{ github.repository }}
