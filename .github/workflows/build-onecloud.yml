@@ -11,7 +11,7 @@ env:
   PATCHES: 4077,5076
   PATCHES_DISABLED: 5082
   UBOOT_REPO: jfy9606/armbian-build
-  UBOOT_RELEASE: uboot
+  UBOOT_RELEASE: uboot-onecloud
   UBOOT_BURNIMG: eMMC.burn.img
 
 permissions:
