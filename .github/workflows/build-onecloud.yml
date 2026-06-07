@@ -265,14 +265,13 @@ jobs:
         run: |
           sudo apt install android-sdk-libsparse-utils
 
-          ver="v0.3.1"
-          curl -L -o ./AmlImg `https://github.com/hzyitc/AmlImg/releases/download/$ver/AmlImg_${ver}_linux_amd64`
+          curl -L -o ./AmlImg "https://github.com/jfy9606/armbian-build/releases/download/AmlImg/AmlImg_v0.3.1_linux_amd64"
           chmod +x ./AmlImg
 
       - name: Download and unpack the latest u-boot
         run: |
           echo "::group::Download"
-          curl -L -o ./uboot.img `https://github.com/${UBOOT_REPO}/releases/download/${UBOOT_TAG}/${UBOOT_BURNIMG}`
+          curl -L -o ./uboot.img "https://github.com/${UBOOT_REPO}/releases/download/${UBOOT_TAG}/${UBOOT_BURNIMG}"
           echo "::endgroup::"
 
           echo "::group::Unpack"
