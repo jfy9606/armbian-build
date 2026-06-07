@@ -11,7 +11,7 @@ env:
   PATCHES: 4077,5076
   PATCHES_DISABLED: 5082
   UBOOT_REPO: jfy9606/armbian-build
-  UBOOT_RELEASE: uboot-onecloud
+  UBOOT_RELEASE: uboot
   UBOOT_BURNIMG: eMMC.burn.img
 
 permissions:
@@ -31,7 +31,7 @@ jobs:
           TAG="ci-$(date -d "${TIME}" -u +'%Y%m%d-%H%M%S-%Z')"
 
           SCRIPT_SHA=$(curl https://api.github.com/repos/${SCRIPT_REPO}/commits/${SCRIPT_REF} | jq -r .sha)
-          UBOOT_TAG=$(curl https://api.github.com/repos/${UBOOT_REPO}/releases/${UBOOT_RELEASE} | jq -r .tag_name)
+          UBOOT_TAG=$(curl https://api.github.com/repos/${UBOOT_REPO}/releases/tags/${UBOOT_RELEASE} | jq -r .tag_name)
           ARMBIAN_SHA=$(curl https://api.github.com/repos/${ARMBIAN_REPO}/commits/${ARMBIAN_REF} | jq -r .sha)
 
           cat <<EOF | sed -E 's/^  //' >>$GITHUB_ENV
@@ -265,13 +265,22 @@ jobs:
         run: |
           sudo apt install android-sdk-libsparse-utils
 
-          curl -L -o ./AmlImg "https://github.com/jfy9606/armbian-build/releases/download/AmlImg/AmlImg_v0.3.1_linux_amd64"
+          curl -L -f -o ./AmlImg "https://github.com/jfy9606/armbian-build/releases/download/AmlImg/AmlImg_v0.3.1_linux_amd64"
+          if [ ! -f ./AmlImg ] || [ ! -s ./AmlImg ]; then
+            echo "ERROR: Failed to download AmlImg or file is empty"
+            exit 1
+          fi
           chmod +x ./AmlImg
 
       - name: Download and unpack the latest u-boot
         run: |
           echo "::group::Download"
-          curl -L -o ./uboot.img "https://github.com/${UBOOT_REPO}/releases/download/${UBOOT_TAG}/${UBOOT_BURNIMG}"
+          curl -L -f -o ./uboot.img "https://github.com/${UBOOT_REPO}/releases/download/${UBOOT_TAG}/${UBOOT_BURNIMG}"
+          if [ ! -f ./uboot.img ] || [ ! -s ./uboot.img ]; then
+            echo "ERROR: Failed to download u-boot image or file is empty"
+            echo "Expected URL: https://github.com/${UBOOT_REPO}/releases/download/${UBOOT_TAG}/${UBOOT_BURNIMG}"
+            exit 1
+          fi
           echo "::endgroup::"
 
           echo "::group::Unpack"
